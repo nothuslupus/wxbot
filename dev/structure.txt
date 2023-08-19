@@ -1,0 +1,24 @@
+wxbot
+    data
+        userPreferences.db
+    dev
+        .old
+    node_modules
+        (Does what it do)
+    src
+        commands
+            weather.js
+        events
+            interactionCreate.js
+            ready.js
+        scripts
+            deploy-commands.js
+            setupDatabase.js
+        utils
+            userPreferences.js
+            weatherApi.js
+        index.js
+    .env
+    .gitignore
+    package-lock.json
+    package.json
