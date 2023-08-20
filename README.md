@@ -36,6 +36,13 @@ Start the bot with:
 ```
 npm start
 ```
+## Author
+Patrick Murphy
+## Version History
+* 1.0.0-beta
+    * Initial Release
+## Acknowledgments
+My thanks to Michelle "LaureiVarju" Dilzell. I liberally cribbed from her Zapros project, and I don't even feel bad about it. But I am thankful.
 ## Contributing
 Feel free to fork, modify, and contribute to this project. Pull requests are welcome!
 ## License
