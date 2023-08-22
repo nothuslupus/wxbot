@@ -1,5 +1,5 @@
 node_modules/
 data/
-dev/*.old
+dev/
 .env
 *.log

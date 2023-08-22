@@ -1,4 +1,5 @@
 import { getWeather } from '../utils/weatherApi.js';
+import { validateOption } from '../utils/helperFunctions.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { setUserPreference, getUserPreference } from '../utils/userPreferences.js';
 
@@ -24,42 +25,41 @@ export default {
 				return;
 			}
 
-			let city, state;
+			if (!location && !set) {
+				const preferences = await getUserPreference(interaction.user.id);
+				
+				if (preferences) {
+					const { city, state } = preferences;
+					const weatherMessage = await getWeather(city.trim(), state.trim());
+					await interaction.reply(weatherMessage);
+				} else {
+					await interaction.reply('No location found. You can set a default location with /weather set "city,state".');
+				}
+				return;
+			}
+			
+			// ternary operator
+			let validation = set ? await validateOption(set) : await validateOption(location);
 
-			const formatCity = city => city.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+			if (validation.invalid) {
+				await interaction.reply(validation.message);
+				return;
+			}
+			
+			let { city, state } = validation.data;
 
 			if (set) {
-				[city, state] = set.split(',');
-				city = formatCity(city);
-				state = state.toUpperCase();
 				setUserPreference(interaction.user.id, city, state);
 				await interaction.reply(`Your default location has been set to ${city}, ${state}.`);
 				return;
 			}
 
-			if (location) {
-				[city, state] = location.split(',');
-				city = formatCity(city);
-				state = state.toUpperCase();
-			} else {
-				console.log(interaction.user.id)
-				const preferences = await getUserPreference(interaction.user.id);
-				console.log(preferences);
-				if (preferences) {
-					city = preferences.city;
-					state = preferences.state;
-				} else {
-					await interaction.reply('No location found. You can set a default location with /weather set "city,state".');
-					return;
-				}
-			}
-
 			const weatherMessage = await getWeather(city.trim(), state.trim());
 			await interaction.reply(weatherMessage);
+			
 		} catch (error) {
 			console.error('An error occurred:', error);
 			await interaction.reply('Sorry, something went wrong. Please try again later.');
 		}
 	}
-
 };
