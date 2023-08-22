@@ -15,6 +15,7 @@ wxbot
             deploy-commands.js
             setupDatabase.js
         utils
+            helperFunctions.js
             userPreferences.js
             weatherApi.js
         index.js
