@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import { Client, GatewayIntentBits } from 'discord.js';
 
 dotenv.config();
-const { TOKEN, COMMANDS_PATH } = process.env;
+const { TOKEN } = process.env;
 
 // Start a new Client instance
 const client = new Client({

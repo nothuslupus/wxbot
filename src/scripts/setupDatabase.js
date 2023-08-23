@@ -12,7 +12,7 @@ if (fs.existsSync(dbPath)) {
     output: process.stdout,
   });
 
-  rl.question('userPreferences1.db already exists. Do you want to overwrite it? (yes/no): ', (answer) => {
+  rl.question('userPreferences.db already exists. Do you want to overwrite it? (yes/no): ', (answer) => {
     if (answer.toLowerCase() === 'yes') {
       createDatabase(dbPath);
     } else {

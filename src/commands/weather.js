@@ -25,12 +25,13 @@ export default {
 				return;
 			}
 
+			// If no location or set option is provided, check if the user has a default location set
 			if (!location && !set) {
 				const preferences = await getUserPreference(interaction.user.id);
 				
 				if (preferences) {
 					const { city, state } = preferences;
-					const weatherMessage = await getWeather(city.trim(), state.trim());
+					const weatherMessage = await getWeather(city, state);
 					await interaction.reply(weatherMessage);
 				} else {
 					await interaction.reply('No location found. You can set a default location with /weather set "city,state".');
@@ -38,24 +39,25 @@ export default {
 				return;
 			}
 			
-			// ternary operator
-			let validation = set ? await validateOption(set) : await validateOption(location);
+			// Validate the city and state
+			const validation = set ? await validateOption(set) : await validateOption(location);
 
 			if (validation.invalid) {
 				await interaction.reply(validation.message);
 				return;
 			}
 			
-			let { city, state } = validation.data;
+			const { city, state } = validation.data;
+			let preferenceSet = "";
 
 			if (set) {
 				setUserPreference(interaction.user.id, city, state);
-				await interaction.reply(`Your default location has been set to ${city}, ${state}.`);
-				return;
+				preferenceSet = `Your default location has been set to: ${city}, ${state}\n`;
 			}
 
-			const weatherMessage = await getWeather(city.trim(), state.trim());
-			await interaction.reply(weatherMessage);
+			const weatherMessage = await getWeather(city, state);
+			await interaction.reply(preferenceSet + weatherMessage);
+			return;
 			
 		} catch (error) {
 			console.error('An error occurred:', error);

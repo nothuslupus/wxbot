@@ -5,8 +5,8 @@ const formatCity = city => city.split(' ').map(word => word.charAt(0).toUpperCas
 const validateOption = async (slashOption) => {
     if (validLocationFormat(slashOption)) {
         let [localCity, localState] = slashOption.split(',');
-        localCity = formatCity(localCity);
-        localState = localState.toUpperCase();
+        localCity = formatCity(localCity).trim();
+        localState = localState.toUpperCase().trim();
 
         return {
             valid: true,
